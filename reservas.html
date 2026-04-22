@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Reserva tu mesa en Sereno · Café y restaurante en Bogotá.">
+<title>Reservas · Sereno</title>
+<link rel="icon" type="image/png" href="logo-sereno.png">
+
+<style>
+  @font-face {
+    font-family: 'Inter';
+    src: url('Inter-VariableFont.ttf') format('truetype-variations');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Skywalks';
+    src: url('Skywalks.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  :root {
+    --crema: #F1F1E7;
+    --sombra: #353432;
+    --sombra-soft: #5A5956;
+    --sombra-mute: #8A8885;
+    --line: rgba(53, 52, 50, 0.12);
+    --line-strong: rgba(53, 52, 50, 0.28);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--crema);
+    color: var(--sombra);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.3;
+    mix-blend-mode: multiply;
+    z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.21 0 0 0 0 0.20 0 0 0 0 0.20 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .page {
+    position: relative;
+    z-index: 2;
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 32px 22px 60px;
+  }
+
+  /* Topbar */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 22px;
+    animation: fadeUp 0.6s ease-out both;
+  }
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--sombra);
+    text-decoration: none;
+    padding: 9px 14px;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    transition: all 0.4s ease;
+  }
+  .back:hover { background: var(--sombra); color: var(--crema); border-color: var(--sombra); }
+  .back svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 1.6; }
+  .brand img { height: 26px; display: block; }
+
+  /* Hero */
+  .hero {
+    text-align: center;
+    padding: 20px 0 36px;
+    animation: fadeUp 0.8s ease-out 0.1s both;
+  }
+  .hero-title {
+    font-family: 'Skywalks', serif;
+    font-weight: 400;
+    font-size: clamp(68px, 14vw, 104px);
+    line-height: 1;
+    letter-spacing: -0.01em;
+    color: var(--sombra);
+  }
+
+  /* Form */
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    animation: fadeUp 0.8s ease-out 0.2s both;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 10.5px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--sombra-mute);
+  }
+
+  /* Inputs */
+  .input, .select {
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--sombra);
+    background: transparent;
+    border: 1px solid var(--line-strong);
+    border-radius: 4px;
+    padding: 16px 18px;
+    outline: none;
+    transition: border-color 0.3s ease, background 0.3s ease;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .input::placeholder { color: var(--sombra-mute); font-weight: 400; }
+  .input:focus, .select:focus { border-color: var(--sombra); background: rgba(255,255,255,0.3); }
+
+  /* Custom date button (abre picker nativo) */
+  .date-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--sombra);
+    background: transparent;
+    border: 1px solid var(--line-strong);
+    border-radius: 4px;
+    padding: 16px 18px;
+    outline: none;
+    cursor: pointer;
+    text-align: left;
+    transition: border-color 0.3s ease, background 0.3s ease;
+  }
+  .date-button:hover, .date-button:focus { border-color: var(--sombra); background: rgba(255,255,255,0.3); }
+  .date-button.placeholder { color: var(--sombra-mute); font-weight: 400; }
+  .date-button svg { width: 18px; height: 18px; stroke: var(--sombra-soft); fill: none; stroke-width: 1.4; flex-shrink: 0; }
+  .date-native {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+  }
+
+  /* Picker de hora (dropdown custom) */
+  .time-picker { position: relative; }
+  .time-button[disabled] {
+    color: var(--sombra-mute);
+    cursor: not-allowed;
+    background: rgba(53,52,50,0.03);
+  }
+  .time-button .chev {
+    width: 12px;
+    height: 12px;
+    border-right: 1.6px solid var(--sombra-soft);
+    border-bottom: 1.6px solid var(--sombra-soft);
+    transform: translateY(-3px) rotate(45deg);
+    transition: transform 0.3s ease;
+  }
+  .time-button[aria-expanded="true"] .chev {
+    transform: translateY(1px) rotate(-135deg);
+  }
+  .time-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    max-height: 300px;
+    overflow-y: auto;
+    background: var(--crema);
+    border: 1px solid var(--line-strong);
+    border-radius: 4px;
+    box-shadow: 0 18px 48px rgba(53,52,50,0.16);
+    padding: 8px;
+    z-index: 20;
+    animation: fadeDown 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .time-menu[hidden] { display: none; }
+  .time-opt {
+    display: block;
+    width: 100%;
+    padding: 13px 14px;
+    background: transparent;
+    border: none;
+    border-radius: 3px;
+    text-align: left;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--sombra);
+    cursor: pointer;
+    transition: background 0.18s ease, color 0.18s ease;
+    font-variant-numeric: tabular-nums;
+  }
+  .time-opt:hover { background: rgba(53,52,50,0.07); }
+  .time-opt[aria-selected="true"] {
+    background: var(--sombra);
+    color: var(--crema);
+  }
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hint {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 12px;
+    color: var(--sombra-soft);
+    margin-top: 2px;
+  }
+  .hint.warn { color: #8B3A00; }
+
+  /* Stepper (personas) */
+  .stepper {
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    padding: 6px;
+    background: transparent;
+    width: fit-content;
+    transition: border-color 0.3s ease;
+  }
+  .stepper:focus-within { border-color: var(--sombra); }
+  .step-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: var(--sombra);
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease, color 0.3s ease;
+    line-height: 1;
+  }
+  .step-btn:hover:not(:disabled) { background: var(--sombra); color: var(--crema); }
+  .step-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .step-val {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--sombra);
+    min-width: 56px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* CTA */
+  .cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+    background: var(--sombra);
+    color: var(--crema);
+    text-decoration: none;
+    border: 1px solid var(--sombra);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    overflow: hidden;
+    position: relative;
+    font-family: inherit;
+    margin-top: 8px;
+  }
+  .cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--crema);
+    transform: translateX(-101%);
+    transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+    z-index: 0;
+  }
+  .cta:hover:not(:disabled)::before { transform: translateX(0); }
+  .cta:hover:not(:disabled) { color: var(--sombra); }
+  .cta > * { position: relative; z-index: 1; }
+  .cta:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .cta-label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    letter-spacing: -0.005em;
+  }
+  .cta-arrow { width: 22px; height: 22px; transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
+  .cta:hover:not(:disabled) .cta-arrow { transform: translateX(4px); }
+  .cta-arrow svg { width: 100%; height: 100%; stroke: currentColor; fill: none; stroke-width: 1.2; }
+
+  /* Horarios */
+  .schedule {
+    margin-top: 56px;
+    padding: 28px 26px;
+    border: 1px solid var(--line-strong);
+    border-radius: 4px;
+    animation: fadeUp 0.9s ease-out 0.4s both;
+  }
+  .schedule-title {
+    font-family: 'Skywalks', serif;
+    font-weight: 400;
+    font-size: 28px;
+    letter-spacing: -0.005em;
+    color: var(--sombra);
+    margin-bottom: 18px;
+  }
+  .schedule-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+  }
+  .schedule-row:last-of-type { border-bottom: none; }
+  .schedule-day {
+    font-weight: 500;
+    color: var(--sombra);
+    letter-spacing: 0.01em;
+  }
+  .schedule-hours {
+    color: var(--sombra-soft);
+    font-weight: 400;
+    font-variant-numeric: tabular-nums;
+  }
+  .schedule-note {
+    margin-top: 16px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: 11.5px;
+    color: var(--sombra-soft);
+    line-height: 1.5;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 480px) {
+    .page { padding: 24px 20px 40px; }
+    .hero { padding: 12px 0 28px; }
+    .hero-title { font-size: 72px; }
+    .schedule { padding: 22px 20px; }
+    .schedule-title { font-size: 24px; }
+    .cta { padding: 16px 20px; }
+    .cta-label { font-size: 14px; }
+    .input, .select, .date-button { font-size: 15.5px; padding: 14px 16px; }
+  }
+
+  .back:focus-visible, .cta:focus-visible, .input:focus-visible, .select:focus-visible, .date-button:focus-visible, .step-btn:focus-visible {
+    outline: 2px solid var(--sombra);
+    outline-offset: 3px;
+  }
+</style>
+</head>
+<body>
+
+<main class="page">
+
+  <div class="topbar">
+    <a href="index.html" class="back">
+      <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Volver
+    </a>
+  </div>
+
+  <section class="hero">
+    <h1 class="hero-title">Reservas</h1>
+  </section>
+
+  <form class="form" id="reservaForm" novalidate>
+
+    <div class="field">
+      <label class="label" for="dateBtn">Fecha</label>
+      <button type="button" class="date-button placeholder" id="dateBtn" aria-label="Elegir fecha">
+        <span id="dateFace">Elige una fecha</span>
+        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+      </button>
+      <input type="date" class="date-native" id="fecha" required>
+      <p class="hint" id="fechaHint">Los lunes descansamos.</p>
+    </div>
+
+    <div class="field">
+      <label class="label">Hora</label>
+      <div class="time-picker">
+        <button type="button" class="date-button time-button placeholder" id="horaBtn" disabled aria-haspopup="listbox" aria-expanded="false">
+          <span id="horaFace">Elige una fecha primero</span>
+          <span class="chev" aria-hidden="true"></span>
+        </button>
+        <div class="time-menu" id="horaMenu" role="listbox" hidden></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Personas</label>
+      <div class="stepper" role="group" aria-label="Número de personas">
+        <button type="button" class="step-btn" id="partyMinus" aria-label="Menos personas">−</button>
+        <span class="step-val" id="partyVal">2</span>
+        <button type="button" class="step-btn" id="partyPlus" aria-label="Más personas">+</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label" for="nombre">Nombre</label>
+      <input type="text" class="input" id="nombre" placeholder="¿A nombre de quién?" autocomplete="name" required>
+    </div>
+
+    <button type="submit" class="cta" id="submitBtn" disabled>
+      <span class="cta-label">Reservar por WhatsApp</span>
+      <div class="cta-arrow">
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </div>
+    </button>
+
+  </form>
+
+  <section class="schedule" aria-label="Horario de atención">
+    <h2 class="schedule-title">Horario</h2>
+    <div class="schedule-row"><span class="schedule-day">Lunes</span><span class="schedule-hours">Descansamos</span></div>
+    <div class="schedule-row"><span class="schedule-day">Martes</span><span class="schedule-hours">9 am — 7 pm</span></div>
+    <div class="schedule-row"><span class="schedule-day">Miércoles</span><span class="schedule-hours">9 am — 7 pm</span></div>
+    <div class="schedule-row"><span class="schedule-day">Jueves</span><span class="schedule-hours">9 am — 7 pm</span></div>
+    <div class="schedule-row"><span class="schedule-day">Viernes</span><span class="schedule-hours">9 am — 7 pm</span></div>
+    <div class="schedule-row"><span class="schedule-day">Sábado</span><span class="schedule-hours">9 am — 7 pm</span></div>
+    <div class="schedule-row"><span class="schedule-day">Domingo</span><span class="schedule-hours">9 am — 4 pm</span></div>
+    <p class="schedule-note">* Si es festivo abrimos y cerramos el siguiente día hábil.</p>
+  </section>
+
+</main>
+
+<script>
+(function() {
+  const WHATSAPP = '573102652862';
+  const fechaInput = document.getElementById('fecha');
+  const dateBtn = document.getElementById('dateBtn');
+  const dateFace = document.getElementById('dateFace');
+  const fechaHint = document.getElementById('fechaHint');
+  const horaBtn = document.getElementById('horaBtn');
+  const horaFace = document.getElementById('horaFace');
+  const horaMenu = document.getElementById('horaMenu');
+  const partyMinus = document.getElementById('partyMinus');
+  const partyPlus = document.getElementById('partyPlus');
+  const partyVal = document.getElementById('partyVal');
+  const nombreInput = document.getElementById('nombre');
+  const submitBtn = document.getElementById('submitBtn');
+  const form = document.getElementById('reservaForm');
+
+  const today = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  const todayStr = `${today.getFullYear()}-${pad(today.getMonth()+1)}-${pad(today.getDate())}`;
+  fechaInput.setAttribute('min', todayStr);
+
+  const MAX_PARTY = 12;
+  let partyCount = 2;
+  let selectedTime = null;
+
+  function formatTime(h, m) {
+    const ampm = h >= 12 ? 'pm' : 'am';
+    const h12 = ((h + 11) % 12) + 1;
+    const mm = m === 0 ? '00' : String(m);
+    return `${h12}:${mm} ${ampm}`;
+  }
+
+  function buildSlots(dayOfWeek) {
+    if (dayOfWeek === 1) return null;
+    const endHour = dayOfWeek === 0 ? 15 : 18;
+    const slots = [];
+    for (let h = 9; h <= endHour; h++) {
+      slots.push(formatTime(h, 0));
+      if (h < endHour) slots.push(formatTime(h, 30));
+    }
+    return slots;
+  }
+
+  function setHoraPlaceholder(text, disabled) {
+    horaFace.textContent = text;
+    horaBtn.classList.add('placeholder');
+    horaBtn.disabled = !!disabled;
+    selectedTime = null;
+  }
+
+  function renderSlots(slots) {
+    horaMenu.innerHTML = '';
+    closeHoraMenu();
+    if (!slots) {
+      setHoraPlaceholder('Elige otro día', true);
+      updateSubmit();
+      return;
+    }
+    setHoraPlaceholder('Selecciona una hora', false);
+    slots.forEach(label => {
+      const opt = document.createElement('button');
+      opt.type = 'button';
+      opt.className = 'time-opt';
+      opt.textContent = label;
+      opt.setAttribute('role', 'option');
+      opt.setAttribute('aria-selected', 'false');
+      opt.addEventListener('click', () => {
+        horaMenu.querySelectorAll('.time-opt').forEach(o => o.setAttribute('aria-selected', 'false'));
+        opt.setAttribute('aria-selected', 'true');
+        selectedTime = label;
+        horaFace.textContent = label;
+        horaBtn.classList.remove('placeholder');
+        closeHoraMenu();
+        updateSubmit();
+      });
+      horaMenu.appendChild(opt);
+    });
+    updateSubmit();
+  }
+
+  function openHoraMenu() {
+    if (horaBtn.disabled) return;
+    horaMenu.hidden = false;
+    horaBtn.setAttribute('aria-expanded', 'true');
+  }
+  function closeHoraMenu() {
+    horaMenu.hidden = true;
+    horaBtn.setAttribute('aria-expanded', 'false');
+  }
+  horaBtn.addEventListener('click', () => {
+    if (horaMenu.hidden) openHoraMenu(); else closeHoraMenu();
+  });
+  document.addEventListener('click', (e) => {
+    if (!horaMenu.hidden && !horaMenu.contains(e.target) && e.target !== horaBtn && !horaBtn.contains(e.target)) {
+      closeHoraMenu();
+    }
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !horaMenu.hidden) closeHoraMenu();
+  });
+
+  const dayNamesShort = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+  const monthNames = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const dayNamesLong = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+
+  function updateDateFace(isoDate) {
+    if (!isoDate) {
+      dateBtn.classList.add('placeholder');
+      dateFace.textContent = 'Elige una fecha';
+      return;
+    }
+    const [y, mo, d] = isoDate.split('-').map(Number);
+    const date = new Date(y, mo - 1, d);
+    dateBtn.classList.remove('placeholder');
+    dateFace.textContent = `${dayNamesShort[date.getDay()]} ${d} de ${monthNames[mo - 1]}`;
+  }
+
+  function handleDateChange() {
+    const val = fechaInput.value;
+    updateDateFace(val);
+    if (!val) {
+      fechaHint.textContent = 'Los lunes descansamos.';
+      fechaHint.classList.remove('warn');
+      setHoraPlaceholder('Elige una fecha primero', true);
+      horaMenu.innerHTML = '';
+      closeHoraMenu();
+      updateSubmit();
+      return;
+    }
+    const [y, mo, d] = val.split('-').map(Number);
+    const date = new Date(y, mo - 1, d);
+    const dow = date.getDay();
+    if (dow === 1) {
+      fechaHint.textContent = 'Los lunes descansamos. Elige otro día.';
+      fechaHint.classList.add('warn');
+      renderSlots(null);
+    } else {
+      fechaHint.textContent = dow === 0 ? 'Domingo: 9 am — 4 pm' : 'Atención: 9 am — 7 pm';
+      fechaHint.classList.remove('warn');
+      renderSlots(buildSlots(dow));
+    }
+  }
+
+  dateBtn.addEventListener('click', () => {
+    if (typeof fechaInput.showPicker === 'function') {
+      try { fechaInput.showPicker(); return; } catch(e) {}
+    }
+    fechaInput.focus();
+    fechaInput.click();
+  });
+  fechaInput.addEventListener('change', handleDateChange);
+  fechaInput.addEventListener('input', handleDateChange);
+
+  function renderParty() {
+    partyVal.textContent = partyCount >= MAX_PARTY ? `${MAX_PARTY}+` : String(partyCount);
+    partyMinus.disabled = partyCount <= 1;
+    partyPlus.disabled = partyCount >= MAX_PARTY;
+  }
+  partyMinus.addEventListener('click', () => { if (partyCount > 1) { partyCount--; renderParty(); } });
+  partyPlus.addEventListener('click', () => { if (partyCount < MAX_PARTY) { partyCount++; renderParty(); } });
+  renderParty();
+
+  nombreInput.addEventListener('input', updateSubmit);
+
+  function updateSubmit() {
+    const ok = fechaInput.value && selectedTime && nombreInput.value.trim().length > 0;
+    submitBtn.disabled = !ok;
+  }
+
+  function formatDateEsLong(isoDate) {
+    const [y, mo, d] = isoDate.split('-').map(Number);
+    const date = new Date(y, mo - 1, d);
+    return `${dayNamesLong[date.getDay()]} ${d} de ${monthNames[mo - 1]}`;
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (submitBtn.disabled) return;
+    const fechaTxt = formatDateEsLong(fechaInput.value);
+    const nombre = nombreInput.value.trim();
+    const personasNum = partyVal.textContent;
+    const personasTxt = personasNum.includes('+')
+      ? `${MAX_PARTY} o más personas`
+      : personasNum === '1' ? '1 persona' : `${personasNum} personas`;
+    const msg =
+      `Hola, quiero reservar una mesa en Sereno.\n\n` +
+      `• Nombre: ${nombre}\n` +
+      `• Fecha: ${fechaTxt}\n` +
+      `• Hora: ${selectedTime}\n` +
+      `• Personas: ${personasTxt}`;
+    const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank', 'noopener');
+  });
+})();
+</script>
+
+</body>
+</html>

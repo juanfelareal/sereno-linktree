@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Sereno · Café y restaurante en Bogotá. Reservas, eventos, renta de espacio y menú.">
+<title>Sereno · Café & Restaurante</title>
+<link rel="icon" type="image/png" href="logo-sereno.png">
+
+<style>
+  @font-face {
+    font-family: 'Inter';
+    src: url('Inter-VariableFont.ttf') format('truetype-variations');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Skywalks';
+    src: url('Skywalks.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  /* Paleta oficial Sereno (Manual de marca V4) */
+  :root {
+    --crema: #F1F1E7;           /* Principal — fondo (coincide con el fondo interno del logo PNG) */
+    --crema-soft: #E8E5D8;      /* Variación más oscura para cards */
+    --sueno-lavanda: #D6CAE1;   /* Lavanda claro */
+    --lavanda: #BAA1CD;         /* Lavanda acento */
+    --sombra: #353432;          /* Negro/tinta */
+    --sombra-soft: #5A5956;
+    --taupe: #E2DACE;           /* Secundario */
+    --kale: #576957;            /* Verde oscuro secundario */
+    --line: rgba(53, 52, 50, 0.12);
+    --line-strong: rgba(53, 52, 50, 0.28);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--crema);
+    color: var(--sombra);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+  }
+
+  /* Grano editorial sutil — similar al del manual */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.35;
+    mix-blend-mode: multiply;
+    z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.21 0 0 0 0 0.20 0 0 0 0 0.20 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .page {
+    position: relative;
+    z-index: 2;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 56px 28px 40px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Header con logo */
+  .header {
+    text-align: center;
+    margin-bottom: 52px;
+    animation: fadeUp 0.9s ease-out both;
+  }
+
+  .logo {
+    width: 200px;
+    height: auto;
+    display: block;
+    margin: 0 auto 22px;
+    mix-blend-mode: multiply;
+  }
+
+  .tagline {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 17px;
+    letter-spacing: 0;
+    color: var(--sombra-soft);
+    line-height: 1.5;
+  }
+
+  .tagline::before,
+  .tagline::after {
+    content: '';
+    display: inline-block;
+    width: 28px;
+    height: 1px;
+    background: var(--line-strong);
+    vertical-align: middle;
+    margin: 0 14px 4px;
+  }
+
+  /* Links */
+  .links {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 26px;
+    background: var(--crema);
+    border: 1px solid var(--sombra);
+    border-radius: 4px;
+    text-decoration: none;
+    color: var(--sombra);
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    animation: fadeUp 0.8s ease-out forwards;
+  }
+
+  .link:nth-child(1) { animation-delay: 0.15s; }
+  .link:nth-child(2) { animation-delay: 0.25s; }
+  .link:nth-child(3) { animation-delay: 0.35s; }
+  .link:nth-child(4) { animation-delay: 0.45s; }
+
+  .link::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--sombra);
+    transform: translateX(-101%);
+    transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+    z-index: 0;
+  }
+
+  .link:hover::before {
+    transform: translateX(0);
+  }
+
+  .link:hover {
+    color: var(--crema);
+    border-color: var(--sombra);
+  }
+
+  .link-text {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .link-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 19px;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+  }
+
+  .link-sub {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--sombra-soft);
+    transition: color 0.5s ease;
+  }
+
+  .link:hover .link-sub {
+    color: rgba(241, 241, 230, 0.7);
+  }
+
+  .link-arrow {
+    position: relative;
+    z-index: 1;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .link:hover .link-arrow {
+    transform: translateX(4px);
+  }
+
+  .link-arrow svg {
+    width: 100%;
+    height: 100%;
+    stroke: currentColor;
+    stroke-width: 1.2;
+    fill: none;
+  }
+
+  /* Link destacado con imagen (Ver menú) */
+  .link-hero {
+    padding: 0;
+    flex-direction: column;
+    align-items: stretch;
+    overflow: hidden;
+    min-height: 280px;
+    border: 1px solid var(--line);
+    background: var(--sombra);
+    backdrop-filter: none;
+  }
+
+  .link-hero::before {
+    display: none;
+  }
+
+  .link-hero-img {
+    position: absolute;
+    inset: 0;
+    background-image: url('menu.jpg');
+    background-size: cover;
+    background-position: center;
+    transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 0;
+  }
+
+  .link-hero-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(53,52,50,0.1) 0%, rgba(53,52,50,0.55) 60%, rgba(53,52,50,0.88) 100%);
+  }
+
+  .link-hero:hover .link-hero-img {
+    transform: scale(1.06);
+  }
+
+  .link-hero:hover {
+    color: var(--crema);
+    border-color: var(--sombra);
+  }
+
+  .link-hero-content {
+    position: relative;
+    z-index: 2;
+    margin-top: auto;
+    padding: 28px 28px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    color: var(--crema);
+  }
+
+  .link-hero-tag {
+    position: absolute;
+    top: 22px;
+    left: 24px;
+    z-index: 2;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(241, 241, 230, 0.85);
+    padding: 6px 12px;
+    border: 1px solid rgba(241, 241, 230, 0.35);
+    border-radius: 2px;
+    backdrop-filter: blur(6px);
+  }
+
+  .link-hero .link-title {
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--crema);
+  }
+
+  .link-hero .link-sub {
+    color: rgba(241, 241, 230, 0.7);
+  }
+
+  .link-hero .link-arrow {
+    color: var(--crema);
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: auto;
+    padding-top: 60px;
+    text-align: center;
+    animation: fadeUp 1s ease-out 0.6s both;
+  }
+
+  .social {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+
+  .social a {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--sombra);
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    transition: all 0.4s ease;
+    background: transparent;
+  }
+
+  .social a:hover {
+    background: var(--sombra);
+    color: var(--crema);
+    border-color: var(--sombra);
+  }
+
+  .social svg {
+    width: 15px;
+    height: 15px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.4;
+  }
+
+  .footer-text {
+    font-family: 'Skywalks', serif;
+    font-weight: 400;
+    font-size: 20px;
+    color: var(--sombra-soft);
+    line-height: 1.4;
+    letter-spacing: -0.005em;
+  }
+
+  .footer-divider {
+    width: 24px;
+    height: 1px;
+    background: var(--line-strong);
+    margin: 12px auto;
+  }
+
+  .footer-fine {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--sombra-soft);
+    opacity: 0.7;
+  }
+
+  /* Animation */
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Mobile tuning */
+  @media (max-width: 480px) {
+    .page {
+      padding: 24px 22px 24px;
+    }
+    .header {
+      margin-bottom: 64px;
+    }
+    .logo {
+      width: 136px;
+      margin-bottom: 14px;
+    }
+    .links {
+      gap: 10px;
+    }
+    .link {
+      padding: 15px 22px;
+    }
+    .link-title {
+      font-size: 16px;
+    }
+    .link-hero {
+      min-height: 185px;
+    }
+    .link-hero .link-title {
+      font-size: 22px;
+    }
+    .link-hero-content {
+      padding: 22px 22px;
+    }
+    .footer {
+      padding-top: 26px;
+    }
+    .social a {
+      width: 36px;
+      height: 36px;
+    }
+  }
+
+  /* Focus visible */
+  .link:focus-visible,
+  .social a:focus-visible {
+    outline: 2px solid var(--sombra);
+    outline-offset: 3px;
+  }
+</style>
+</head>
+<body>
+
+<main class="page">
+
+  <header class="header">
+    <img src="logo-sereno.png" alt="Sereno café restaurante" class="logo">
+  </header>
+
+  <nav class="links" aria-label="Enlaces principales">
+
+    <!-- Próximos eventos -->
+    <a href="eventos.html" class="link">
+      <div class="link-text">
+        <span class="link-title">Próximos eventos</span>
+      </div>
+      <div class="link-arrow">
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+    <!-- Reservas -->
+    <a href="reservas.html" class="link">
+      <div class="link-text">
+        <span class="link-title">Reservas</span>
+      </div>
+      <div class="link-arrow">
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+    <!-- Rentar espacio -->
+    <a href="espacio.html" class="link">
+      <div class="link-text">
+        <span class="link-title">Rentar el espacio</span>
+      </div>
+      <div class="link-arrow">
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+    <!-- Ver menú (destacado con imagen) -->
+    <a href="menu.html" class="link link-hero">
+      <div class="link-hero-img"></div>
+      <span class="link-hero-tag">La carta</span>
+      <div class="link-hero-content">
+        <div class="link-text">
+          <span class="link-title">Menú</span>
+        </div>
+        <div class="link-arrow">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+    </a>
+
+  </nav>
+
+  <footer class="footer">
+    <div class="social">
+      <a href="https://www.instagram.com/serenobog/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor"/></svg>
+      </a>
+      <a href="https://wa.me/573102652862" target="_blank" rel="noopener" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24"><path d="M3 21l1.65-4.5A9 9 0 1 1 8 20l-5 1z"/><path d="M8.5 9.5c.5 3 2 4.5 5 5l1.5-1.5 2.5 1v2c0 .5-.5 1-1 1-4 0-8-4-8-8 0-.5.5-1 1-1h2l1 2.5-1.5 1z"/></svg>
+      </a>
+    </div>
+    <p class="footer-text">Bogotá · Colombia</p>
+    <div class="footer-divider"></div>
+    <p class="footer-fine">Sereno © 2026</p>
+  </footer>
+
+</main>
+
+</body>
+</html>

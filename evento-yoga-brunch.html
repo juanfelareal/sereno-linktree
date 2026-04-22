@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Yoga & Brunch · Domingo 24 de mayo en Sereno, Bogotá. Un domingo consciente para pausar, respirar y moverte.">
+<title>Yoga & Brunch · Sereno</title>
+<link rel="icon" type="image/png" href="logo-sereno.png">
+
+<style>
+  @font-face {
+    font-family: 'Inter';
+    src: url('Inter-VariableFont.ttf') format('truetype-variations');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Skywalks';
+    src: url('Skywalks.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  :root {
+    --crema: #F1F1E7;
+    --sombra: #353432;
+    --sombra-soft: #5A5956;
+    --sombra-mute: #8A8885;
+    --line: rgba(53, 52, 50, 0.12);
+    --line-strong: rgba(53, 52, 50, 0.28);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--crema);
+    color: var(--sombra);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.3;
+    mix-blend-mode: multiply;
+    z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.21 0 0 0 0 0.20 0 0 0 0 0.20 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .page {
+    position: relative;
+    z-index: 2;
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 32px 22px 60px;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 22px;
+    animation: fadeUp 0.6s ease-out both;
+  }
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--sombra);
+    text-decoration: none;
+    padding: 9px 14px;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    transition: all 0.4s ease;
+  }
+  .back:hover { background: var(--sombra); color: var(--crema); border-color: var(--sombra); }
+  .back svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 1.6; }
+  .brand img { height: 26px; display: block; }
+
+  /* Hero image */
+  .event-hero {
+    border-radius: 4px;
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    background: var(--sombra);
+    background-image: url('evento-yoga-brunch.jpg');
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 36px;
+    animation: fadeUp 0.8s ease-out 0.1s both;
+    border: 1px solid var(--line);
+  }
+
+  /* Meta row: fecha · hora */
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 24px;
+    animation: fadeUp 0.8s ease-out 0.2s both;
+  }
+  .meta-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--sombra);
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    background: transparent;
+  }
+  .meta-pill svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 1.6; }
+
+  .event-title {
+    font-family: 'Skywalks', serif;
+    font-weight: 400;
+    font-size: clamp(52px, 12vw, 80px);
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    color: var(--sombra);
+    margin-top: 24px;
+    margin-bottom: 28px;
+    animation: fadeUp 0.8s ease-out 0.2s both;
+  }
+
+  .event-body {
+    animation: fadeUp 0.8s ease-out 0.35s both;
+  }
+
+  .event-body p {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--sombra-soft);
+    margin-bottom: 18px;
+    max-width: 46ch;
+  }
+  .event-body p:last-of-type { margin-bottom: 0; }
+
+  .divider {
+    width: 40px;
+    height: 1px;
+    background: var(--line-strong);
+    margin: 36px 0 32px;
+  }
+
+  /* Detalles en filas */
+  .details {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 36px;
+    animation: fadeUp 0.8s ease-out 0.45s both;
+  }
+  .detail-row {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .detail-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .detail-label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 10.5px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--sombra-mute);
+    flex-shrink: 0;
+    width: 80px;
+  }
+  .detail-val {
+    font-family: 'Skywalks', serif;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 1.2;
+    color: var(--sombra);
+  }
+
+  /* CTA */
+  .cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+    background: var(--sombra);
+    color: var(--crema);
+    text-decoration: none;
+    border-radius: 4px;
+    border: 1px solid var(--sombra);
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    animation: fadeUp 0.8s ease-out 0.55s both;
+    overflow: hidden;
+    position: relative;
+  }
+  .cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--crema);
+    transform: translateX(-101%);
+    transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+    z-index: 0;
+  }
+  .cta:hover::before { transform: translateX(0); }
+  .cta:hover { color: var(--sombra); }
+  .cta > * { position: relative; z-index: 1; }
+
+  .cta-label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    letter-spacing: -0.005em;
+  }
+  .cta-arrow { width: 22px; height: 22px; transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
+  .cta:hover .cta-arrow { transform: translateX(4px); }
+  .cta-arrow svg { width: 100%; height: 100%; stroke: currentColor; fill: none; stroke-width: 1.2; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 480px) {
+    .page { padding: 24px 20px 40px; }
+    .event-hero { margin-bottom: 28px; }
+    .event-title { margin-bottom: 22px; }
+    .event-body p { font-size: 14.5px; }
+    .detail-label { width: 64px; font-size: 10px; }
+    .detail-val { font-size: 18px; }
+    .cta { padding: 16px 20px; }
+    .cta-label { font-size: 14px; }
+  }
+
+  .back:focus-visible, .cta:focus-visible {
+    outline: 2px solid var(--sombra);
+    outline-offset: 3px;
+  }
+</style>
+</head>
+<body>
+
+<main class="page">
+
+  <div class="topbar">
+    <a href="eventos.html" class="back">
+      <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Eventos
+    </a>
+  </div>
+
+  <h1 class="event-title">Yoga &amp; Brunch</h1>
+
+  <div class="event-body">
+    <p>Antes de empezar la semana, regálate un momento de pausa lejos del caos, un espacio para compartir un domingo consciente.</p>
+    <p>Ven a pausar, respirar, mover tu cuerpo y calmar la mente.</p>
+    <p>La práctica de yoga es para todos y nos invita a respirar juntos para cultivar presencia.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="details">
+    <div class="detail-row">
+      <span class="detail-label">Fecha</span>
+      <span class="detail-val">Domingo 24 de mayo</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">Hora</span>
+      <span class="detail-val">10:00 am — 1:00 pm</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-label">Lugar</span>
+      <span class="detail-val">Sereno · Bogotá</span>
+    </div>
+  </div>
+
+  <a href="https://wa.me/573102652862?text=Hola%2C%20quiero%20reservar%20mi%20cupo%20para%20Yoga%20%26%20Brunch%20del%20domingo%2024%20de%20mayo" target="_blank" rel="noopener" class="cta">
+    <span class="cta-label">Reservar mi cupo</span>
+    <div class="cta-arrow">
+      <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </div>
+  </a>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Menú de Sereno · Café y restaurante en Bogotá. Desayunos, fuertes, dulces, cafés y bebidas de autor.">
+<title>Menú · Sereno Café & Restaurante</title>
+<link rel="icon" type="image/png" href="logo-sereno.png">
+
+<style>
+  @font-face {
+    font-family: 'Inter';
+    src: url('Inter-VariableFont.ttf') format('truetype-variations');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Skywalks';
+    src: url('Skywalks.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  :root {
+    --crema: #F1F1E7;
+    --crema-soft: #E8E5D8;
+    --sueno-lavanda: #D6CAE1;
+    --sueno-lavanda-soft: #E8DFEF;
+    --lavanda: #BAA1CD;
+    --sombra: #353432;
+    --sombra-soft: #5A5956;
+    --sombra-mute: #8A8885;
+    --taupe: #E2DACE;
+    --kale: #576957;
+    --line: rgba(53, 52, 50, 0.12);
+    --line-strong: rgba(53, 52, 50, 0.28);
+    --line-dotted: rgba(53, 52, 50, 0.22);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: var(--crema);
+    color: var(--sombra);
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+  }
+
+  /* Grano sutil */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.3;
+    mix-blend-mode: multiply;
+    z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.21 0 0 0 0 0.20 0 0 0 0 0.20 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Tab dulce cambia el fondo de la página */
+  body.is-dulce { background: var(--sueno-lavanda-soft); transition: background 0.8s ease; }
+  body { transition: background 0.8s ease; }
+
+  .page {
+    position: relative;
+    z-index: 2;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 40px 32px 80px;
+  }
+
+  /* Top bar */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    animation: fadeUp 0.6s ease-out both;
+  }
+
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--sombra);
+    text-decoration: none;
+    padding: 10px 14px;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    transition: all 0.4s ease;
+  }
+  .back:hover {
+    background: var(--sombra);
+    color: var(--crema);
+    border-color: var(--sombra);
+  }
+  .back svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 1.6; }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--sombra-soft);
+  }
+  .brand img { height: 28px; width: auto; display: block; }
+
+  /* Hero */
+  .hero {
+    text-align: center;
+    padding: 30px 0 48px;
+    animation: fadeUp 0.8s ease-out 0.1s both;
+  }
+  .hero-kicker {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 10.5px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--sombra-soft);
+    margin-bottom: 18px;
+  }
+  .hero-title {
+    font-family: 'Skywalks', serif;
+    font-weight: 400;
+    font-size: clamp(88px, 16vw, 152px);
+    letter-spacing: -0.01em;
+    line-height: 0.95;
+    color: var(--sombra);
+  }
+  .hero-sub {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: var(--sombra-soft);
+    margin-top: 26px;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.7;
+  }
+
+  /* Tabs sticky */
+  .tabs-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--crema);
+    margin: 0 -32px;
+    padding: 14px 32px;
+    border-bottom: 1px solid var(--line);
+    transition: background 0.8s ease;
+  }
+  body.is-dulce .tabs-wrap { background: var(--sueno-lavanda-soft); }
+
+  .tabs {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-snap-type: x mandatory;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+
+  .tab {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    color: var(--sombra-soft);
+    background: transparent;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    padding: 10px 18px;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    white-space: nowrap;
+  }
+  .tab:hover { color: var(--sombra); border-color: var(--sombra); }
+  .tab[aria-selected="true"] {
+    background: var(--sombra);
+    color: var(--crema);
+    border-color: var(--sombra);
+  }
+  .tab .tab-i {
+    font-family: 'Skywalks', serif;
+    font-weight: 400;
+    margin-right: 6px;
+    opacity: 0.75;
+    font-size: 12px;
+  }
+
+  /* Sections */
+  .section {
+    display: none;
+    animation: fadeUp 0.6s ease-out both;
+    padding-top: 48px;
+  }
+  .section.active { display: block; }
+
+  .section-kicker {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 10.5px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--sombra-mute);
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-family: 'Skywalks', serif;
+    font-weight: 400;
+    font-size: clamp(56px, 10vw, 88px);
+    letter-spacing: -0.01em;
+    line-height: 1;
+    color: var(--sombra);
+    margin-bottom: 10px;
+  }
+  .section-note {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 13px;
+    color: var(--sombra-soft);
+    margin-bottom: 40px;
+    letter-spacing: 0.01em;
+  }
+
+  /* Category (Entradas, Desayunos, etc.) — sans-serif bold como en el PDF */
+  .cat {
+    margin-bottom: 56px;
+  }
+  .cat-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .cat-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    color: var(--sombra);
+  }
+  .cat-hint {
+    font-family: 'Inter', sans-serif;
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--sombra-mute);
+  }
+
+  /* Subcategory (Mocktails, Super lattes, etc.) */
+  .subcat-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: -0.005em;
+    color: var(--sombra);
+    margin: 28px 0 18px;
+  }
+  .subcat-title:first-child { margin-top: 0; }
+
+  /* Items grid for two-column on desktop */
+  .items {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 22px 48px;
+  }
+  .items.two-col { grid-template-columns: 1fr 1fr; }
+
+  .item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .item-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .item-name {
+    font-family: 'Skywalks', serif;
+    font-weight: 400;
+    font-size: 19px;
+    letter-spacing: 0;
+    line-height: 1.1;
+    color: var(--sombra);
+    flex-shrink: 0;
+    max-width: calc(100% - 80px);
+  }
+
+  .item-tags {
+    display: inline-flex;
+    gap: 4px;
+    flex-shrink: 0;
+    align-self: center;
+    margin-left: 4px;
+  }
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 8.5px;
+    letter-spacing: 0;
+    color: var(--sombra-soft);
+    background: transparent;
+    border: 1px solid var(--line-strong);
+  }
+
+  .item-dots {
+    flex: 1;
+    align-self: flex-end;
+    border-bottom: 1px dotted var(--line-dotted);
+    transform: translateY(-5px);
+    min-width: 20px;
+  }
+
+  .item-price {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--sombra);
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .item-desc {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--sombra-soft);
+    letter-spacing: 0.005em;
+    max-width: 46ch;
+  }
+
+  .item-bases {
+    margin-top: 6px;
+    padding-left: 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11.5px;
+    color: var(--sombra-soft);
+    line-height: 1.7;
+  }
+  .item-bases strong { font-weight: 500; color: var(--sombra); }
+
+  /* Adiciones box */
+  .adiciones-box {
+    margin-top: 40px;
+    padding: 28px;
+    border: 1px solid var(--line-strong);
+    border-radius: 4px;
+    background: rgba(226, 218, 206, 0.35);
+  }
+  .adiciones-box .cat-title { margin-bottom: 16px; }
+  .adiciones-box .items { gap: 10px 48px; }
+  .adiciones-box .item-head { gap: 10px; }
+  .adiciones-box .item-name { font-weight: 400; }
+  .adiciones-box .adic-note {
+    margin-top: 14px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: 11.5px;
+    color: var(--sombra-soft);
+  }
+
+  /* Callout (Menu de la semana, Smoothie bowl bases) */
+  .callout {
+    padding: 18px 22px;
+    border: 1px dashed var(--line-strong);
+    border-radius: 4px;
+    margin-top: 14px;
+  }
+  .callout .item-head { gap: 14px; }
+
+  /* Dulce section — base lavanda soft */
+  .section[data-theme="dulce"] .tag {
+    border-color: rgba(53,52,50,0.3);
+  }
+  .section[data-theme="dulce"] .cat-head,
+  .section[data-theme="dulce"] .subcat-title {
+    border-color: rgba(53,52,50,0.18);
+  }
+  .section[data-theme="dulce"] .item-dots {
+    border-bottom-color: rgba(53,52,50,0.3);
+  }
+
+  /* Footer */
+  .legend {
+    margin-top: 72px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px 28px;
+    justify-content: center;
+    align-items: center;
+  }
+  .legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11.5px;
+    color: var(--sombra-soft);
+  }
+  .legend-item .tag { color: var(--sombra); }
+
+  .footer {
+    margin-top: 48px;
+    text-align: center;
+  }
+  .footer-note {
+    font-family: 'Skywalks', serif;
+    font-weight: 400;
+    font-size: 22px;
+    color: var(--sombra-soft);
+    line-height: 1.4;
+    max-width: 420px;
+    margin: 0 auto;
+    letter-spacing: -0.005em;
+  }
+  .footer-divider {
+    width: 24px;
+    height: 1px;
+    background: var(--line-strong);
+    margin: 20px auto;
+  }
+  .footer-fine {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--sombra-soft);
+    opacity: 0.7;
+  }
+
+  /* Animación */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Mobile */
+  @media (max-width: 640px) {
+    .page { padding: 26px 20px 60px; }
+    .tabs-wrap { margin: 0 -20px; padding: 12px 20px; }
+    .hero { padding: 16px 0 32px; }
+    .hero-sub { font-size: 14px; }
+    .items.two-col { grid-template-columns: 1fr; gap: 22px; }
+    .cat-head { flex-wrap: wrap; gap: 6px 12px; }
+    .cat-title { font-size: 20px; }
+    .section-title { font-size: 64px; }
+    .hero-title { font-size: 96px; }
+    .item-name { font-size: 17px; max-width: calc(100% - 60px); }
+    .item-price { font-size: 14px; }
+    .footer-note { font-size: 19px; }
+    .item-desc { font-size: 12px; }
+    .brand { font-size: 13px; }
+    .brand img { height: 24px; }
+    .back { font-size: 11px; padding: 8px 12px; }
+    .adiciones-box { padding: 22px 20px; }
+
+    /* Tabs: distribuir en el ancho sin scroll horizontal */
+    .tabs {
+      overflow-x: visible;
+      scroll-snap-type: none;
+      gap: 5px;
+      justify-content: space-between;
+    }
+    .tab {
+      flex: 1 1 0;
+      min-width: 0;
+      padding: 9px 6px;
+      font-size: 11.5px;
+      letter-spacing: -0.005em;
+      text-align: center;
+      white-space: nowrap;
+    }
+  }
+
+  .link:focus-visible,
+  .tab:focus-visible,
+  .back:focus-visible {
+    outline: 2px solid var(--sombra);
+    outline-offset: 3px;
+  }
+</style>
+</head>
+<body>
+
+<main class="page">
+
+  <div class="topbar">
+    <a href="index.html" class="back">
+      <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Volver
+    </a>
+  </div>
+
+  <section class="hero">
+    <h1 class="hero-title">Menú</h1>
+  </section>
+
+  <div class="tabs-wrap">
+    <div class="tabs" role="tablist" aria-label="Secciones del menú">
+      <button class="tab" role="tab" aria-selected="true" data-tab="dia">Todo el día</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="tarde">De tarde</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="dulce">De dulce</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="bebidas">Bebidas</button>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- TODO EL DÍA -->
+  <!-- ============================================ -->
+  <section class="section active" id="dia" role="tabpanel">
+    <h2 class="section-title">Todo el día</h2>
+
+    <div class="cat">
+      <div class="cat-head">
+        <h3 class="cat-title">Entradas</h3>
+      </div>
+      <div class="items two-col">
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Empanada napolitana</span>
+            <span class="item-dots"></span>
+            <span class="item-price">8.5</span>
+          </div>
+          <p class="item-desc">Queso bajo en grasa, tomate y especies — contiene lácteos.</p>
+        </div>
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Mini empanada de espinaca</span>
+            <span class="item-dots"></span>
+            <span class="item-price">4.5</span>
+          </div>
+          <p class="item-desc">Queso bajo en grasa y espinaca — contiene lácteos.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat">
+      <div class="cat-head">
+        <h3 class="cat-title">Desayunos</h3>
+      </div>
+      <div class="items two-col">
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Fluffy pancakes</span>
+            <span class="item-tags"><span class="tag" title="Gluten free">GF</span></span>
+            <span class="item-dots"></span>
+            <span class="item-price">30</span>
+          </div>
+          <p class="item-desc">Pancakes de avena, crema de coco, caramelo salado, fresas, arándanos, açaí, almendras y flores comestibles.</p>
+        </div>
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Guac y tomate arepas</span>
+            <span class="item-tags"><span class="tag" title="Gluten free">GF</span></span>
+            <span class="item-dots"></span>
+            <span class="item-price">26.5</span>
+          </div>
+          <p class="item-desc">Arepas de yuca (2 und) acompañadas con frijol caraota, guacamole, tomate cherry y mazorca parrillada.</p>
+        </div>
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Sanduche de queso</span>
+            <span class="item-dots"></span>
+            <span class="item-price">26.5</span>
+          </div>
+          <p class="item-desc">Pan brioche, queso mozzarella y mermelada de tomates cherry.</p>
+        </div>
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Bowl de papas al horno y huevo</span>
+            <span class="item-tags"><span class="tag" title="Huevo">H</span><span class="tag" title="Gluten free">GF</span></span>
+            <span class="item-dots"></span>
+            <span class="item-price">30</span>
+          </div>
+          <p class="item-desc">Papas al horno, mazorca, tocineta de almendras, huevos, aguacate y salsa picante.</p>
+        </div>
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Bowl de frutas</span>
+            <span class="item-tags"><span class="tag" title="Gluten free">GF</span></span>
+            <span class="item-dots"></span>
+            <span class="item-price">28</span>
+          </div>
+          <p class="item-desc">Frutas de temporada y banano, pudín de chía en leche de coco y crumble de canela.</p>
+        </div>
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Tostada de hongos</span>
+            <span class="item-dots"></span>
+            <span class="item-price">32</span>
+          </div>
+          <p class="item-desc">Tostada de pan masa madre (2 und), hongos shitake, portobellos en balsámico, harissa y tomates secos.</p>
+        </div>
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Big breakfast</span>
+            <span class="item-dots"></span>
+            <span class="item-price">32</span>
+          </div>
+          <p class="item-desc">Pericos de tofu, hongos parrillados con salsa ranchera, aguacate, papas al horno, chimichurri de la casa y pan crocante.</p>
+        </div>
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Sanduche de huevo revuelto</span>
+            <span class="item-tags"><span class="tag" title="Huevo">H</span></span>
+            <span class="item-dots"></span>
+            <span class="item-price">30</span>
+          </div>
+          <p class="item-desc">Pan brioche, orellanas desmechadas, huevos, rúgula, aguacate y salsa tártara.</p>
+        </div>
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Smoothie bowl</span>
+            <span class="item-tags"><span class="tag" title="Gluten free">GF</span></span>
+            <span class="item-dots"></span>
+            <span class="item-price">28</span>
+          </div>
+          <p class="item-desc">Granola con cereales gluten free, mantequilla de almendras, quinoa pop, banano, fresas y arándanos.</p>
+          <div class="item-bases">
+            <strong>Escoge tu base:</strong><br>
+            ~ Berries: frutos rojos, sandía y banano.<br>
+            ~ Verde: espinaca, espirulina, banano, jengibre y kale.<br>
+            ~ Cacao: cacao, canela y banano.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- DE TARDE -->
+  <!-- ============================================ -->
+  <section class="section" id="tarde" role="tabpanel">
+    <h2 class="section-title">De tarde</h2>
+
+    <div class="cat">
+      <div class="cat-head">
+        <h3 class="cat-title">Entradas</h3>
+        <span class="cat-hint">Aderezos hechos en casa</span>
+      </div>
+      <div class="items two-col">
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Dedito de queso</span>
+            <span class="item-dots"></span>
+            <span class="item-price">8.5</span>
+          </div>
+          <p class="item-desc">Harina integral, queso de soya tipo mozzarella o cheddar.</p>
+        </div>
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Chicharrones de mazorca</span>
+            <span class="item-tags"><span class="tag" title="Gluten free">GF</span><span class="tag" title="Picante">P</span></span>
+            <span class="item-dots"></span>
+            <span class="item-price">24</span>
+          </div>
+          <p class="item-desc">Mazorca, salsa roja mexicana, almendras y cebollín.</p>
+        </div>
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Dip de temporada</span>
+            <span class="item-dots"></span>
+            <span class="item-price">26</span>
+          </div>
+          <p class="item-desc">Acompañado de pan de masa madre.</p>
+        </div>
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Porción de arepas con hogao</span>
+            <span class="item-tags"><span class="tag" title="Gluten free">GF</span></span>
+            <span class="item-dots"></span>
+            <span class="item-price">16</span>
+          </div>
+          <p class="item-desc">Yuca, maíz peto y queso de coco.</p>
+        </div>
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Vegetales al horno</span>
+            <span class="item-tags"><span class="tag" title="Gluten free">GF</span></span>
+            <span class="item-dots"></span>
+            <span class="item-price">23</span>
+          </div>
+          <p class="item-desc">Zanahoria baby, remolacha, coliflor y pesto.</p>
+        </div>
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Papas al horno, romero y salsa de la casa</span>
+            <span class="item-tags"><span class="tag" title="Gluten free">GF</span></span>
+            <span class="item-dots"></span>
+            <span class="item-price">15</span>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Chips de camote al horno y alioli de nueces y alcaparras</span>
+            <span class="item-tags"><span class="tag" title="Gluten free">GF</span></span>
+            <span class="item-dots"></span>
+            <span class="item-price">16</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="cat">
+      <div class="cat-head">
+        <h3 class="cat-title">Fuertes</h3>
+      </div>
+      <div class="items two-col">
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Bowl mexicano</span>
+            <span class="item-tags"><span class="tag" title="Gluten free">GF</span></span>
+            <span class="item-dots"></span>
+            <span class="item-price">33</span>
+          </div>
+          <p class="item-desc">Arroz jazmín, frijol negro, vegetales a la parrilla, tofu, chipotle de marañón, guacamole, camote, hojas verdes y nuez del pecán.</p>
+        </div>
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Bowl asiático</span>
+            <span class="item-tags"><span class="tag" title="Gluten free">GF</span></span>
+            <span class="item-dots"></span>
+            <span class="item-price">33</span>
+          </div>
+          <p class="item-desc">Berenjena nasu con miso, tofu parrillado, arroz jazmín, patilla tipo salmón con algas nori, verdes y edamames.</p>
+        </div>
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Curry verde</span>
+            <span class="item-tags"><span class="tag" title="Gluten free">GF</span></span>
+            <span class="item-dots"></span>
+            <span class="item-price">36</span>
+          </div>
+          <p class="item-desc">Curry verde a base de limonaria y coco, tofu parrillado, arroz jazmín, hojas verdes, aguacate y duraznos.</p>
+        </div>
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Arroz de Indonesia</span>
+            <span class="item-tags"><span class="tag" title="Gluten free">GF</span></span>
+            <span class="item-dots"></span>
+            <span class="item-price">35</span>
+          </div>
+          <p class="item-desc">Arroz jazmín con limonaria, marañón, hongos, vegetales salteados y tofu crocante en salsa de jengibre y miel.</p>
+        </div>
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Tacos al pastor</span>
+            <span class="item-tags"><span class="tag" title="Gluten free">GF</span><span class="tag" title="Picante">P</span></span>
+            <span class="item-dots"></span>
+            <span class="item-price">30</span>
+          </div>
+          <p class="item-desc">Hongos portobello en chipotle, piña asada, guacamole, pico de gallo y rábano.</p>
+        </div>
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Hamburguesa BBQ</span>
+            <span class="item-dots"></span>
+            <span class="item-price">35</span>
+          </div>
+          <p class="item-desc">Pan rústico, hongo crocante, salsa bbq, cebolla, queso tipo cheddar, pepinillos y papas en casco.</p>
+        </div>
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Sanduche de pesto</span>
+            <span class="item-dots"></span>
+            <span class="item-price">27</span>
+          </div>
+          <p class="item-desc">Pan de masa madre, pesto, tomates secos, queso mozzarella y zanahorias parrilladas.</p>
+        </div>
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Sanduche Strogonoff</span>
+            <span class="item-dots"></span>
+            <span class="item-price">34</span>
+          </div>
+          <p class="item-desc">Pan brioche, hongos en salsa strogonoff de marañón, zanahorias crocantes y papas en casco.</p>
+        </div>
+
+      </div>
+
+      <div class="callout">
+        <div class="item-head">
+          <span class="item-name">Pregunta por nuestro Menú de la semana</span>
+          <span class="item-dots"></span>
+          <span class="item-price">34</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat">
+      <div class="cat-head">
+        <h3 class="cat-title">Ensaladas</h3>
+      </div>
+      <div class="items two-col">
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Ensalada de vegetales horneados y yerbabuena</span>
+            <span class="item-tags"><span class="tag" title="Gluten free">GF</span></span>
+            <span class="item-dots"></span>
+            <span class="item-price">25</span>
+          </div>
+          <p class="item-desc">Hojas verdes, berenjena y remolacha al horno, queso de marañón, dukkah de pistachos, garbanzos crocantes, yerbabuena, rábanos y vinagreta tahini-miso.</p>
+        </div>
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Ensalada con manzana y nuez del nogal</span>
+            <span class="item-dots"></span>
+            <span class="item-price">24</span>
+          </div>
+          <p class="item-desc">Hojas verdes, uvas, manzana, brócoli, nuez del nogal, aderezo de almendras y jengibre.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="adiciones-box">
+      <h3 class="cat-title">Adiciones</h3>
+      <div class="items two-col">
+        <div class="item"><div class="item-head"><span class="item-name">Queso de coco</span><span class="item-dots"></span><span class="item-price">5.5</span></div></div>
+        <div class="item"><div class="item-head"><span class="item-name">Huevos revueltos</span><span class="item-dots"></span><span class="item-price">6</span></div></div>
+        <div class="item"><div class="item-head"><span class="item-name">Aguacate</span><span class="item-dots"></span><span class="item-price">7</span></div></div>
+        <div class="item"><div class="item-head"><span class="item-name">Huevos fritos</span><span class="item-dots"></span><span class="item-price">7</span></div></div>
+        <div class="item"><div class="item-head"><span class="item-name">Hongos</span><span class="item-dots"></span><span class="item-price">8.5</span></div></div>
+        <div class="item"><div class="item-head"><span class="item-name">Proteína en polvo vegana</span><span class="item-dots"></span><span class="item-price">7.5</span></div></div>
+      </div>
+      <p class="adic-note">Inclúyelas en cualquiera de nuestros desayunos y fuertes.</p>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- DE DULCE -->
+  <!-- ============================================ -->
+  <section class="section" id="dulce" role="tabpanel" data-theme="dulce">
+    <h2 class="section-title">De dulce</h2>
+    <p class="section-note">Libres de lácteos, libres de azúcar.</p>
+
+    <div class="cat">
+      <div class="items">
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Dona</span>
+            <span class="item-tags"><span class="tag" title="Vegano">V</span><span class="tag" title="Gluten free">GF</span></span>
+            <span class="item-dots"></span>
+            <span class="item-price">12.5</span>
+          </div>
+          <p class="item-desc">Harina de tapioca, coco, dátiles, mantequilla de almendras y caramelo.</p>
+        </div>
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Galleta con chips de chocolate y nuez pecana</span>
+            <span class="item-tags"><span class="tag" title="Vegano">V</span><span class="tag" title="Gluten free">GF</span></span>
+            <span class="item-dots"></span>
+            <span class="item-price">17.5</span>
+          </div>
+          <p class="item-desc">Harina de almendras, harina de avena, alulosa, chips de chocolate 60%, nuez pecán y sal marina.</p>
+        </div>
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Torta de almendras y arándanos</span>
+            <span class="item-tags"><span class="tag" title="Vegano">V</span><span class="tag" title="Gluten free">GF</span></span>
+            <span class="item-dots"></span>
+            <span class="item-price">16.5</span>
+          </div>
+          <p class="item-desc">Harina de almendras, harina de arroz, miel de dátil, estevia, centro de coco, salsa de arándanos frescos y nueces caramelizadas.</p>
+        </div>
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Crumble de manzana</span>
+            <span class="item-tags"><span class="tag" title="Vegano">V</span></span>
+            <span class="item-dots"></span>
+            <span class="item-price">14</span>
+          </div>
+          <p class="item-desc">Harina integral, harina de almendra, canela, manzana y nuez del pecán.</p>
+        </div>
+
+        <div class="item">
+          <div class="item-head">
+            <span class="item-name">Torta de chocolate</span>
+            <span class="item-tags"><span class="tag" title="Vegano">V</span></span>
+            <span class="item-dots"></span>
+            <span class="item-price">14</span>
+          </div>
+          <p class="item-desc">Harina integral, crema de cacao, frutos rojos y avellanas.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- BEBIDAS -->
+  <!-- ============================================ -->
+  <section class="section" id="bebidas" role="tabpanel">
+    <h2 class="section-title">Bebidas</h2>
+
+    <div class="cat">
+      <div class="cat-head">
+        <h3 class="cat-title">Mocktails</h3>
+      </div>
+      <div class="items two-col">
+        <div class="item">
+          <div class="item-head"><span class="item-name">Matcha Mojito</span><span class="item-dots"></span><span class="item-price">17</span></div>
+          <p class="item-desc">Yerbabuena, miel de dátil, matcha y limón.</p>
+        </div>
+        <div class="item">
+          <div class="item-head"><span class="item-name">Flor de Jamaica y gulupa</span><span class="item-dots"></span><span class="item-price">15.5</span></div>
+          <p class="item-desc">Flor de jamaica, gulupa, miel de dátil y romero.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat">
+      <div class="cat-head">
+        <h3 class="cat-title">Vinos</h3>
+      </div>
+      <div class="items two-col">
+        <div class="item"><div class="item-head"><span class="item-name">Copa de vino blanco</span><span class="item-dots"></span><span class="item-price">28</span></div></div>
+        <div class="item"><div class="item-head"><span class="item-name">Copa de vino tinto</span><span class="item-dots"></span><span class="item-price">28</span></div></div>
+      </div>
+    </div>
+
+    <div class="cat">
+      <div class="cat-head">
+        <h3 class="cat-title">Batidos</h3>
+      </div>
+      <div class="items two-col">
+        <div class="item">
+          <div class="item-head"><span class="item-name">Poder púrpura</span><span class="item-dots"></span><span class="item-price">14</span></div>
+          <p class="item-desc">Apio, zanahoria, remolacha, limón y jengibre.</p>
+        </div>
+        <div class="item">
+          <div class="item-head"><span class="item-name">Jugo verde</span><span class="item-dots"></span><span class="item-price">16</span></div>
+          <p class="item-desc">Espinaca, naranja, jengibre, cohombro y espirulina.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat">
+      <div class="cat-head">
+        <h3 class="cat-title">Otras bebidas</h3>
+      </div>
+      <div class="items two-col">
+        <div class="item"><div class="item-head"><span class="item-name">Kombucha</span><span class="item-dots"></span><span class="item-price">9.5</span></div></div>
+        <div class="item"><div class="item-head"><span class="item-name">Soda artesanal de frutas Corelia</span><span class="item-dots"></span><span class="item-price">11</span></div></div>
+        <div class="item"><div class="item-head"><span class="item-name">Agua mineral Siembra</span><span class="item-dots"></span><span class="item-price">8</span></div></div>
+        <div class="item"><div class="item-head"><span class="item-name">Agua mineral Siembra con gas</span><span class="item-dots"></span><span class="item-price">7</span></div></div>
+        <div class="item"><div class="item-head"><span class="item-name">Limonada natural</span><span class="item-dots"></span><span class="item-price">9</span></div></div>
+        <div class="item"><div class="item-head"><span class="item-name">Jugo de naranja</span><span class="item-dots"></span><span class="item-price">10</span></div></div>
+        <div class="item"><div class="item-head"><span class="item-name">Jugo natural en agua</span><span class="item-dots"></span><span class="item-price">9</span></div></div>
+        <div class="item"><div class="item-head"><span class="item-name">Soda de espirulina fermentada OROÓ</span><span class="item-dots"></span><span class="item-price">11</span></div></div>
+      </div>
+    </div>
+
+    <div class="cat">
+      <div class="cat-head">
+        <h3 class="cat-title">Bebidas calientes</h3>
+      </div>
+
+      <h4 class="subcat-title">Super lattes</h4>
+      <div class="items two-col">
+        <div class="item"><div class="item-head"><span class="item-name">Golden cúrcuma latte</span><span class="item-dots"></span><span class="item-price">14.6</span></div></div>
+        <div class="item"><div class="item-head"><span class="item-name">Matcha latte</span><span class="item-dots"></span><span class="item-price">16</span></div></div>
+        <div class="item"><div class="item-head"><span class="item-name">Butterfly Pea latte</span><span class="item-dots"></span><span class="item-price">16</span></div></div>
+        <div class="item"><div class="item-head"><span class="item-name">Masala Chai latte</span><span class="item-dots"></span><span class="item-price">16</span></div></div>
+        <div class="item"><div class="item-head"><span class="item-name">Onix Chai latte</span><span class="item-dots"></span><span class="item-price">14.6</span></div></div>
+      </div>
+
+      <h4 class="subcat-title">Infusiones y té</h4>
+      <div class="items two-col">
+        <div class="item"><div class="item-head"><span class="item-name">Infusión jardín de rosas</span><span class="item-dots"></span><span class="item-price">10.5</span></div></div>
+        <div class="item"><div class="item-head"><span class="item-name">Infusión sutileza</span><span class="item-dots"></span><span class="item-price">10.5</span></div></div>
+        <div class="item"><div class="item-head"><span class="item-name">Infusión jengibre y pera</span><span class="item-dots"></span><span class="item-price">10.5</span></div></div>
+        <div class="item"><div class="item-head"><span class="item-name">Té negro y flores</span><span class="item-dots"></span><span class="item-price">10.5</span></div></div>
+      </div>
+    </div>
+
+    <div class="cat">
+      <div class="cat-head">
+        <h3 class="cat-title">Smoothies</h3>
+      </div>
+      <div class="items two-col">
+        <div class="item">
+          <div class="item-head"><span class="item-name">Berríes</span><span class="item-dots"></span><span class="item-price">21</span></div>
+          <p class="item-desc">Fresas, arándanos, moras, banano y leche vegetal.</p>
+        </div>
+        <div class="item">
+          <div class="item-head"><span class="item-name">Verde</span><span class="item-dots"></span><span class="item-price">22.5</span></div>
+          <p class="item-desc">Espinaca, espirulina, limón, banano, jengibre, kale, cúrcuma y leche vegetal.</p>
+        </div>
+        <div class="item">
+          <div class="item-head"><span class="item-name">Havana</span><span class="item-dots"></span><span class="item-price">21</span></div>
+          <p class="item-desc">Mango, banano, maracuyá, piña y leche vegetal.</p>
+        </div>
+        <div class="item">
+          <div class="item-head"><span class="item-name">Café</span><span class="item-dots"></span><span class="item-price">19.5</span></div>
+          <p class="item-desc">Café, dátiles, mantequilla de almendras, banano y leche vegetal.</p>
+        </div>
+      </div>
+      <div class="callout">
+        <div class="item-head"><span class="item-name">Adición proteína en polvo vegana</span><span class="item-dots"></span><span class="item-price">7.5</span></div>
+      </div>
+    </div>
+
+    <div class="cat">
+      <div class="cat-head">
+        <h3 class="cat-title">Bebidas a base de café</h3>
+      </div>
+
+      <h4 class="subcat-title">Frías</h4>
+      <div class="items two-col">
+        <div class="item">
+          <div class="item-head"><span class="item-name">Orange Coffee</span><span class="item-dots"></span><span class="item-price">15</span></div>
+          <p class="item-desc">Shot de espresso y jugo de naranja.</p>
+        </div>
+        <div class="item">
+          <div class="item-head"><span class="item-name">Iced Latte</span><span class="item-dots"></span><span class="item-price">14.5</span></div>
+          <p class="item-desc">Shot de espresso y leche vegetal.</p>
+        </div>
+        <div class="item">
+          <div class="item-head"><span class="item-name">Iced Mocca</span><span class="item-dots"></span><span class="item-price">15</span></div>
+          <p class="item-desc">Cacao, shot de espresso y leche vegetal.</p>
+        </div>
+        <div class="item">
+          <div class="item-head"><span class="item-name">Iced Butterfly Pea Latte</span><span class="item-dots"></span><span class="item-price">16</span></div>
+          <p class="item-desc">Butterfly pea y leche vegetal.</p>
+        </div>
+        <div class="item">
+          <div class="item-head"><span class="item-name">Iced Matcha</span><span class="item-dots"></span><span class="item-price">16</span></div>
+          <p class="item-desc">Té verde japonés y leche vegetal.</p>
+        </div>
+      </div>
+
+      <h4 class="subcat-title">Calientes</h4>
+      <div class="items two-col">
+        <div class="item"><div class="item-head"><span class="item-name">Espresso</span><span class="item-dots"></span><span class="item-price">6.9</span></div></div>
+        <div class="item"><div class="item-head"><span class="item-name">Espresso doble</span><span class="item-dots"></span><span class="item-price">8.5</span></div></div>
+        <div class="item"><div class="item-head"><span class="item-name">Americano</span><span class="item-dots"></span><span class="item-price">8.9</span></div></div>
+        <div class="item"><div class="item-head"><span class="item-name">Café Latte</span><span class="item-dots"></span><span class="item-price">12.5</span></div></div>
+        <div class="item"><div class="item-head"><span class="item-name">Capuccino</span><span class="item-dots"></span><span class="item-price">13.9</span></div></div>
+        <div class="item"><div class="item-head"><span class="item-name">Flat White</span><span class="item-dots"></span><span class="item-price">12.9</span></div></div>
+        <div class="item"><div class="item-head"><span class="item-name">Mocaccino</span><span class="item-dots"></span><span class="item-price">15.5</span></div></div>
+        <div class="item"><div class="item-head"><span class="item-name">Chocolate</span><span class="item-dots"></span><span class="item-price">13</span></div></div>
+        <div class="item"><div class="item-head"><span class="item-name">Chocolate en agua</span><span class="item-dots"></span><span class="item-price">10.2</span></div></div>
+      </div>
+      <div class="callout">
+        <div class="item-head"><span class="item-name">Adición leche de coco</span><span class="item-dots"></span><span class="item-price">3.5</span></div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============================================ -->
+  <!-- LEYENDA + FOOTER -->
+  <!-- ============================================ -->
+  <div class="legend" aria-label="Leyenda">
+    <div class="legend-item"><span class="tag">V</span> Vegano</div>
+    <div class="legend-item"><span class="tag">GF</span> Gluten free</div>
+    <div class="legend-item"><span class="tag">H</span> Huevo</div>
+    <div class="legend-item"><span class="tag">P</span> Picante</div>
+  </div>
+
+  <footer class="footer">
+    <p class="footer-fine">@serenobog</p>
+  </footer>
+
+</main>
+
+<script>
+  (function() {
+    const tabs = document.querySelectorAll('.tab');
+    const sections = document.querySelectorAll('.section');
+    const body = document.body;
+
+    function activate(id) {
+      tabs.forEach(t => {
+        const selected = t.dataset.tab === id;
+        t.setAttribute('aria-selected', selected ? 'true' : 'false');
+      });
+      sections.forEach(s => {
+        s.classList.toggle('active', s.id === id);
+      });
+      body.classList.toggle('is-dulce', id === 'dulce');
+
+      // Scroll al inicio de la sección (no a la página)
+      const tabsTop = document.querySelector('.tabs-wrap').offsetTop;
+      if (window.scrollY > tabsTop) {
+        window.scrollTo({ top: tabsTop - 8, behavior: 'smooth' });
+      }
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => activate(tab.dataset.tab));
+    });
+  })();
+</script>
+
+</body>
+</html>
