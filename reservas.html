@@ -148,7 +148,8 @@
   .input::placeholder { color: var(--sombra-mute); font-weight: 400; }
   .input:focus, .select:focus { border-color: var(--sombra); background: rgba(255,255,255,0.3); }
 
-  /* Custom date button (abre picker nativo) */
+  /* Custom date button — envuelve el input nativo con opacity 0 arriba */
+  .date-field { position: relative; }
   .date-button {
     display: flex;
     align-items: center;
@@ -163,20 +164,32 @@
     border-radius: 4px;
     padding: 16px 18px;
     outline: none;
-    cursor: pointer;
     text-align: left;
     transition: border-color 0.3s ease, background 0.3s ease;
+    pointer-events: none;
   }
-  .date-button:hover, .date-button:focus { border-color: var(--sombra); background: rgba(255,255,255,0.3); }
+  .date-field:focus-within .date-button,
+  .date-field:hover .date-button { border-color: var(--sombra); background: rgba(255,255,255,0.3); }
   .date-button.placeholder { color: var(--sombra-mute); font-weight: 400; }
   .date-button svg { width: 18px; height: 18px; stroke: var(--sombra-soft); fill: none; stroke-width: 1.4; flex-shrink: 0; }
   .date-native {
     position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     opacity: 0;
-    pointer-events: none;
-    width: 0;
-    height: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 16px; /* evitar zoom en iOS */
+    color: transparent;
+    padding: 0;
+    margin: 0;
+    -webkit-appearance: none;
+    appearance: none;
+    z-index: 2;
   }
+  .date-native::-webkit-date-and-time-value { text-align: left; }
 
   /* Picker de hora (dropdown custom) */
   .time-picker { position: relative; }
@@ -419,12 +432,14 @@
   <form class="form" id="reservaForm" novalidate>
 
     <div class="field">
-      <label class="label" for="dateBtn">Fecha</label>
-      <button type="button" class="date-button placeholder" id="dateBtn" aria-label="Elegir fecha">
-        <span id="dateFace">Elige una fecha</span>
-        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
-      </button>
-      <input type="date" class="date-native" id="fecha" required>
+      <label class="label" for="fecha">Fecha</label>
+      <div class="date-field">
+        <div class="date-button placeholder" id="dateBtn">
+          <span id="dateFace">Elige una fecha</span>
+          <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+        </div>
+        <input type="date" class="date-native" id="fecha" required aria-label="Fecha">
+      </div>
       <p class="hint" id="fechaHint">Los lunes descansamos.</p>
     </div>
 
@@ -620,13 +635,6 @@
     }
   }
 
-  dateBtn.addEventListener('click', () => {
-    if (typeof fechaInput.showPicker === 'function') {
-      try { fechaInput.showPicker(); return; } catch(e) {}
-    }
-    fechaInput.focus();
-    fechaInput.click();
-  });
   fechaInput.addEventListener('change', handleDateChange);
   fechaInput.addEventListener('input', handleDateChange);
 

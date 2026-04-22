@@ -45,7 +45,7 @@
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    min-height: 100vh;
+    min-height: 100dvh;
   }
 
   /* Grano editorial sutil — similar al del manual */
@@ -66,7 +66,7 @@
     max-width: 480px;
     margin: 0 auto;
     padding: 56px 28px 40px;
-    min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     flex-direction: column;
   }
@@ -373,14 +373,14 @@
   /* Mobile tuning */
   @media (max-width: 480px) {
     .page {
-      padding: 24px 22px 24px;
+      padding: 20px 22px calc(20px + env(safe-area-inset-bottom));
     }
     .header {
-      margin-bottom: 64px;
+      margin-bottom: 36px;
     }
     .logo {
       width: 136px;
-      margin-bottom: 14px;
+      margin-bottom: 10px;
     }
     .links {
       gap: 10px;
@@ -401,11 +401,20 @@
       padding: 22px 22px;
     }
     .footer {
-      padding-top: 26px;
+      padding-top: 18px;
+    }
+    .social {
+      margin-bottom: 14px;
     }
     .social a {
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
+    }
+    .footer-text {
+      font-size: 17px;
+    }
+    .footer-divider {
+      margin: 8px auto;
     }
   }
 
